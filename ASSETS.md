@@ -1,7 +1,8 @@
 # Slate for iPhone: asset catalog (v0.1, 11/3/2026)
 
-The PNGs aren't kept in the project (it holds text only). icon-1024.png is icon 85 (slate/icons/icon85.html, rendered at 1024 by
-icon.js, saved as RGB with no alpha channel, which App Store Connect requires). launch-logo@2x.png and @3x.png are the R2 lockup
+The PNGs aren't kept in the project (it holds text only). icon-1024.png is icon 124 since 11/3 (slate/icons/icon124.html: the thin
+now line on the L's left edge, stopping 12 above it; rendered at 1024 by icon.js, saved as RGB with no alpha channel, which App
+Store Connect requires; it was icon 85 before). launch-logo@2x.png and @3x.png are the R2 lockup
 (the L flush with the cap, gold from the cap down fading to cream at the foot), rendered with a transparent background by
 slate/app/launchlogo.html and launchlogo.js (about 233 points wide). The Contents.json files:
 
