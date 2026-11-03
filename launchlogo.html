@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&display=swap">
+<style>html,body{margin:0;background:transparent}#l{display:inline-block;line-height:0}</style></head><body>
+<div id="l"></div>
+<script src="logo.js"></script>
+<script>
+/* the launch-screen logo: the R2 lockup (11/3), the L flush with the cap and gold from the cap down, fading to cream at the foot */
+document.fonts.load('800 100px "Barlow Condensed"').then(() => document.fonts.ready).then(() => {
+  const m = logoSvg({ cap: 100, ink: '#ece9e2', gold: '#f5b82e', tip: 1.0, head: 'none', blend: [0.23, 0.43], pad: 2 });
+  document.getElementById('l').innerHTML = m.svg;
+  document.body.dataset.w = m.width; document.body.dataset.h = m.height; document.body.dataset.ready = '1';
+});
+</script></body></html>

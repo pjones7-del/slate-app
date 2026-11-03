@@ -1,0 +1,7 @@
+Slate.xcodeproj/
+Slate/Info.plist
+build/
+DerivedData/
+*.xcarchive
+*.p8
+.DS_Store
