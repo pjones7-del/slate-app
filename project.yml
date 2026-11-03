@@ -26,7 +26,7 @@ targets:
     info:
       path: Slate/Info.plist
       properties:
-        CFBundleDisplayName: Slate
+        CFBundleDisplayName: SLATE    # the label under the icon (the App Store name is "SLATE Scoreboard"; plain SLATE is taken there)
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSRequiresIPhoneOS: true
@@ -42,7 +42,7 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         UIViewControllerBasedStatusBarAppearance: true
-        NSLocationWhenInUseUsageDescription: Slate uses your location once, to find your ZIP code for your local TV listings.
-        NSCameraUsageDescription: Slate can read a bet slip from a photo you take.
-        NSPhotoLibraryUsageDescription: Slate reads bet slips from the screenshots you pick.
+        NSLocationWhenInUseUsageDescription: SLATE uses your location once, to find your ZIP code for your local TV listings.
+        NSCameraUsageDescription: SLATE can read a bet slip from a photo you take.
+        NSPhotoLibraryUsageDescription: SLATE reads bet slips from the screenshots you pick.
     scheme: {}
