@@ -4,10 +4,10 @@ import WebKit
 /// Where the app finds the board, and the colors it starts in.
 ///
 /// The board is the same page as the home-screen web app, so it updates the moment a change is pushed, with no app update.
-/// When the board moves to its own .com, GitHub forwards this address there and the app follows the forward (the new host
-/// is trusted because the board's own address sent it there), so this line doesn't have to change.
+/// It lives at its own .com since 11/8/2026 (GitHub Pages, HTTPS enforced); the old pjones7-del.github.io/football-slate/
+/// address forwards there, and the app would still follow that forward, but loading the .com directly skips the hop.
 enum Board {
-    static let url = URL(string: "https://pjones7-del.github.io/football-slate/")!
+    static let url = URL(string: "https://slatescoreboard.com/")!
 
     /// Appended to the web view's user agent, so the page can tell it's running inside the app.
     static var userAgentTag: String {
