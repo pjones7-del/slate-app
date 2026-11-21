@@ -1,11 +1,12 @@
 import SafariServices
 import UIKit
+import UniformTypeIdentifiers
 import WebKit
 
 /// The whole app for now: the board in a full-screen web view. The strips under the status bar and the home indicator take the
 /// board's own header and background colors (they follow its theme and style), links out open in the app that claims them (ESPN's
-/// gamecast in the ESPN app) or else an in-app Safari sheet, Print goes to the system print sheet, and a retry screen covers the
-/// board when it can't be reached.
+/// gamecast in the ESPN app) or else an in-app Safari sheet, Print goes to the system print sheet, a slip's copy icon puts its
+/// picture on the pasteboard, and a retry screen covers the board when it can't be reached.
 final class BoardViewController: UIViewController {
     private var webView: WKWebView!
     private let topStrip = UIView()
@@ -30,7 +31,7 @@ final class BoardViewController: UIViewController {
 
         let content = WKUserContentController()
         let handler = WeakScriptHandler(self)
-        for name in ["theme", "open", "print"] {
+        for name in ["theme", "open", "print", "copyImage"] {
             content.add(handler, name: name)
         }
         content.addUserScript(WKUserScript(source: BridgeScript.atStart, injectionTime: .atDocumentStart, forMainFrameOnly: true))
@@ -114,6 +115,14 @@ final class BoardViewController: UIViewController {
             safari.dismissButtonStyle = .done
             self.present(safari, animated: true)
         }
+    }
+
+    /// A slip's copy icon on the board: its picture arrives as a PNG data URL and goes on the pasteboard, with a success tap.
+    private func copyImage(_ body: Any) {
+        guard let text = body as? String, text.hasPrefix("data:image/png;base64,"), let comma = text.firstIndex(of: ","),
+              let data = Data(base64Encoded: String(text[text.index(after: comma)...])), UIImage(data: data) != nil else { return }
+        UIPasteboard.general.setData(data, forPasteboardType: UTType.png.identifier)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
     }
 
     private func printBoard() {
@@ -213,6 +222,8 @@ extension BoardViewController: WKScriptMessageHandler {
             openOutside(url)
         case "print":
             printBoard()
+        case "copyImage":
+            copyImage(message.body)
         default:
             break
         }
