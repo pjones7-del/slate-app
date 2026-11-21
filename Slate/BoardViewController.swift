@@ -3,8 +3,9 @@ import UIKit
 import WebKit
 
 /// The whole app for now: the board in a full-screen web view. The strips under the status bar and the home indicator take the
-/// board's own header and background colors (they follow its theme and style), links out to ESPN and the networks open in an
-/// in-app Safari sheet, Print goes to the system print sheet, and a retry screen covers the board when it can't be reached.
+/// board's own header and background colors (they follow its theme and style), links out open in the app that claims them (ESPN's
+/// gamecast in the ESPN app) or else an in-app Safari sheet, Print goes to the system print sheet, and a retry screen covers the
+/// board when it can't be reached.
 final class BoardViewController: UIViewController {
     private var webView: WKWebView!
     private let topStrip = UIView()
@@ -15,7 +16,7 @@ final class BoardViewController: UIViewController {
     private var boardHosts: Set<String> = [Board.url.host?.lowercased() ?? ""]
     /// True from asking for the board until it has loaded or failed; a forward to a new host is trusted only then.
     private var loadingBoard = false
-    /// The board opens a link with window.open and, if that seems to fail, again by navigating; this keeps it to one sheet.
+    /// The board opens a link with window.open and, if that seems to fail, again by navigating; this keeps it to one open.
     private var lastOutside: (url: URL, at: Date)?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -93,7 +94,8 @@ final class BoardViewController: UIViewController {
         }
     }
 
-    /// Anything that isn't the board: ESPN, a network's site, a team page. Opens over the board, which stays where it was.
+    /// Anything that isn't the board: ESPN, a network's site, a team page. An installed app that claims the link opens it, the way
+    /// Safari hands it over on the website (ESPN's gamecast in the ESPN app); anything else opens over the board, which stays put.
     private func openOutside(_ url: URL) {
         if let last = lastOutside, last.url == url, Date().timeIntervalSince(last.at) < 1.5 {
             return
@@ -105,10 +107,13 @@ final class BoardViewController: UIViewController {
             return
         }
         guard presentedViewController == nil else { return }
-        let safari = SFSafariViewController(url: url)
-        safari.preferredControlTintColor = Board.gold
-        safari.dismissButtonStyle = .done
-        present(safari, animated: true)
+        UIApplication.shared.open(url, options: [.universalLinksOnly: true]) { [weak self] opened in
+            guard !opened, let self = self, self.presentedViewController == nil else { return }
+            let safari = SFSafariViewController(url: url)
+            safari.preferredControlTintColor = Board.gold
+            safari.dismissButtonStyle = .done
+            self.present(safari, animated: true)
+        }
     }
 
     private func printBoard() {
